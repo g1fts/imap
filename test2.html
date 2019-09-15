@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        *{ margin: 0; padding: 0; }
+        ul, li{ list-style: none; }
+        ul{ padding: 20px; background: black; }
+        li{ padding: 10px; background: white; }
+        span{ padding: 5px; background: green; margin: 5px; }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <ul>
+        <li><span>1</span><span>11</span></li>
+        <li><span>2</span><span>22</span><span>222</span></li>
+        <li><span>3</span></li>
+    </ul>
+    <script>
+        var ul = document.getElementsByTagName("ul")[0];
+        var li = document.getElementsByTagName("li");
+        for(var i = 0; i < li.length; i++){  
+            var that = li[i];  
+            li[i].onclick = (function(k){
+                return function(){  
+                    alert("我的index是"+k);
+                }  
+            })(i);
+            console.log("i的值是："+i);
+            var span = li[i].getElementsByTagName("span");
+            for(var j = 0; j <span.length; j++){
+                console.log("i的值是："+i+"，j的值是："+j);
+                var that = span[j];  
+                span[j].onclick = (function(m){
+                    return function(){  
+                        alert("我的index1是"+j+"里的"+m);
+                    }  
+                })(j);
+            }
+        }
+    </script>
+</body>
+</html>

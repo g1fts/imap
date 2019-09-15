@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/imap.css">
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <title>拱墅区教育地图</title>
+</head>
+<body>
+    <!--地图容器-->
+    <div class="imap" id="drag">
+        <!-- 信息弹窗 -->
+        <div class="dialog" id="dialog">
+            <div class="dialogTop">
+                <div class="dialogTitle" id="dialogTitle">信息</div>
+                <button class="dialogClose" id="dialogClose">x</button>
+            </div>
+            <div class="dialogContent" id="dialogContent">
+                信息说明
+            </div>
+        </div>
+        <!-- 定位范围圈 -->
+        <div class="iCircles" id="iCircles"></div>
+        <!-- 集团详细数据 -->
+        <div class="iGroups" id="iGroups">
+            <!-- 学校详细数据 -->
+            <div class="iSchools" id="iSchools"></div>
+        </div>
+    </div>
+    <!-- 引导弹层 -->
+    <div class="guide" id="guide"></div>
+
+    <script>
+        var iClientWidth = parseFloat(document.documentElement.clientWidth);
+        var iClientHeight = parseFloat(document.documentElement.clientHeight);
+
+        var drag = document.getElementById("drag");
+        var iCircles = document.getElementById("iCircles");
+        var iGroups = document.getElementById("iGroups");
+        var iSchools = document.getElementById("iSchools");
+
+        var dialog = document.getElementById("dialog");
+        var dialogTitle = document.getElementById("dialogTitle");
+        var dialogClose = document.getElementById("dialogClose");
+        var dialogContent = document.getElementById("dialogContent");
+
+        var guide = document.getElementById("guide");
+
+        var iGroupDiv = document.getElementsByClassName("iGroup");
+        var iGuideItem = document.getElementsByClassName("guideItem");
+        var iSchoolDiv = document.getElementsByClassName("iSchool");
+
+        var schoolData = [];
+        
+
+        $.ajax({
+            url: "data.json",
+            type: "GET",
+            dataType: "JSON",
+            success: function(data){
+                for(var i = 0; i < data.length; i++){
+                    //添加定位点
+                    var pointDiv = document.createElement("div");
+                    pointDiv.className = "iPoint";
+                    pointDiv.style.left = data[i].x + "px";
+                    pointDiv.style.top = data[i].y + "px";
+                    iCircles.appendChild(pointDiv);
+
+                    //添加范围圈
+                    var circleDiv = document.createElement("div");
+                    circleDiv.className = "iCircle";
+                    circleDiv.style.width = circleDiv.style.height = data[i].d + "px";
+                    circleDiv.style.background = "radial-gradient(rgba("+data[i].color+",0),"+"rgba("+data[i].color+",1))";
+                    pointDiv.appendChild(circleDiv);
+
+                    //添加集团详细数据
+                    var groupDiv = document.createElement("div");
+                    groupDiv.className = "iGroup";
+                    groupDiv.innerText = data[i].name;
+                    groupDiv.style.backgroundImage = "url("+data[i].icon+")";
+                    groupDiv.style.left = data[i].x + "px";
+                    groupDiv.style.top = data[i].y + "px";
+                    iGroups.appendChild(groupDiv);
+                    
+                    //添加学校详细数据
+                    var schools = data[i].school;
+                    $.each(schools,function(index,item){
+                        //console.log(item);
+                        var schoolDiv = document.createElement("div");
+                        schoolDiv.className = "iSchool";
+                        schoolDiv.innerText = item.name;
+                        schoolDiv.style.backgroundImage = "url("+item.icon+")";
+                        schoolDiv.style.left = item.x + "px";
+                        schoolDiv.style.top = item.y + "px";
+                        iSchools.appendChild(schoolDiv);
+                    });
+
+                    //添加引导弹窗数据
+                    var guideDiv = document.createElement("div");
+                    guideDiv.className = "guideItem";
+                    var guideCircle = document.createElement("div");
+                    guideCircle.className = "guideItemCircle";
+                    guideCircle.style.background = "radial-gradient(rgba("+data[i].color+",0),"+"rgba("+data[i].color+",1))";
+                    guideDiv.appendChild(guideCircle);
+                    var guideIcon = document.createElement("div");
+                    guideIcon.className = "guideItemIcon";
+                    guideIcon.style.backgroundImage = "url("+data[i].icon+")";
+                    guideDiv.appendChild(guideIcon);
+                    var guideName = document.createElement("div");
+                    guideName.className = "guideItemName";
+                    guideName.innerText = data[i].name;
+                    guideDiv.appendChild(guideName);
+                    guide.appendChild(guideDiv);
+
+                    //集团的点击事件
+                    iGroupDiv[i].onclick = (function(j){
+                        return function(){
+                            dialogInner(data[j]);
+                            dialogInfo(data[j]);
+                        }
+                    })(i);
+
+                    //引导层点击事件
+                    iGuideItem[i].onclick = (function(k){
+                        return function(){
+                            dialogInner(data[k]);
+                            dialogInfo(data[k]);
+                        }
+                    })(i);
+
+                    //信息弹窗关闭事件
+                    dialogClose.onclick = dClose;
+                    //获取学校信息组成数组
+                    $.each(data[i].school,function(index,item){
+                        schoolData.push(item);
+                    })
+                }
+                //学校点击事件
+                for( var m = 0; m < iSchoolDiv.length; m++){
+                    iSchoolDiv[m].onclick = (function(n){
+                        return function(){
+                            dialogInner(schoolData[n]);
+                            dialogInfo(schoolData[n]);
+                        }
+                    })(m);
+                };                
+            }
+        })
+
+        function dialogInner(data){
+            var tab = ""
+            if(data.school){
+                var schoolInfo = [["学校名称","办学性质","备注"]];
+                tab = '<table class = "iTable" cellpadding = "0" cellspacing = "0">';
+                $.each(data.school,function(index,item){
+                    schoolInfo.push([item.name,item.nature,item.remarks]);
+                    tab = tab + '<tr>';
+                    for(var d = 0; d < schoolInfo[index].length; d++){
+                        if(index == 0){
+                            tab = tab + "<th>" + schoolInfo[0][d] + "</th>";
+                        }else{
+                            tab = tab + "<td>" + schoolInfo[index][d] + "</td>";
+                        }
+                    }
+                    tab = tab + '</tr>';
+                })
+            }
+            tab = tab + '</table>';
+            var sInner = "";
+            if(data.range != ""){
+                sInner = sInner + "<div class='schoolTitle'>户籍儿童教育服务区</div><div class='schoolContent'>" + data.range + "</div>"
+            }
+            if(data.range1 != ""){
+                sInner = sInner + "<div class='schoolTitle'>随迁子女教育服务区</div><div class='schoolContent'>" + data.range1 + "</div>"
+            }
+            if(data.rise != ""){
+                sInner = sInner + "<div class='schoolTitle'>直升小学</div><div class='schoolContent'>" + data.rise + "</div>"
+            }
+            if(data.phone != ""){
+                sInner = sInner + "<div class='schoolTitle'>电话</div><div class='schoolContent'>" + data.phone + "</div>"
+            }
+            if(data.tips != ""){
+                sInner = sInner + "<div class='schoolTitle'>温馨提醒</div><div class='schoolContent'>" + data.tips + "</div>"
+            }else{
+                sInner = sInner + "<div class='schoolTitle'>温馨提醒</div><div class='schoolContent'>报名请携带报名材料：房产证及复印件、户口簿及复印件、预防接种卡！</div>"
+            }
+            if(data.content != ""){
+                sInner = sInner + "<div class='schoolTitle'>其他信息</div><div class='schoolContent'><p>" + data.content + "</p></div>"
+            }
+            dialogContent.innerHTML = tab + sInner;
+        }
+
+        function dialogInfo(item){
+            dialog.style.left = item.x-200 + "px";
+            dialog.style.bottom = drag.offsetHeight-item.y+10 + "px";
+            dialogTitle.innerText = item.name;
+            dialog.style.visibility = "visible";
+            dialog.style.opacity = "1";
+            drag.style.transition = "all 1s";
+            if(item.x < iClientWidth/2){
+                drag.style.left = 0 + "px";
+            }else if(item.x > drag.offsetWidth - iClientWidth/2){
+                drag.style.left = -(drag.offsetWidth - iClientWidth) + "px";
+            }else{
+                drag.style.left = -(parseFloat(item.x)-iClientWidth/2) + "px";
+            }
+            if(item.y < iClientHeight/2+dialog.offsetHeight){
+                drag.style.top = 0 + "px";
+            }else if(item.y > drag.offsetHeight - iClientHeight/2+dialog.offsetHeight/2){
+                drag.style.top = -(drag.offsetHeight - iClientHeight-dialog.offsetHeight/2) + "px";
+            }else{
+                drag.style.top = -(parseFloat(item.y)-iClientHeight/2-dialog.offsetHeight/2) + "px";
+            }
+        }
+        function dClose(){
+            dialog.style.visibility = "hidden";
+            dialog.style.opacity = "0";
+        }
+
+        // 页面加载执行
+        window.onload = function(){
+            //地图居中
+            drag.style.left = -(drag.offsetWidth - iClientWidth)/2 + "px";
+            drag.style.top = -(drag.offsetHeight - iClientHeight)/2 + "px";
+            mapDrag();
+        }
+        // 地图拖拽方法
+        function mapDrag(){
+            // 点击某物体时，用drag对象即可，move和up是全局区域，
+            // 也就是整个文档通用，应该使用document对象而不是drag对象(否则，采用drag对象时物体只能往右方或下方移动)  
+            drag.onmousedown = function(event){
+                var event = event || window.event;  //兼容IE浏览器
+               //鼠标点击物体那一刻相对于物体左侧边框的距离=点击时的位置相对于浏览器最左边的距离-物体左边框相对于浏览器最左边的距离
+                var diffX = event.clientX - drag.offsetLeft;
+                var diffY = event.clientY - drag.offsetTop;
+                //console.log("down");
+                if(typeof drag.setCapture !== 'undefined'){
+                        drag.setCapture(); 
+                }
+                document.onmousemove = function(event){
+                    drag.style.transition = "all 0s";
+                    dClose();
+                    //console.log("move");
+                    var event = event || window.event;
+                    var moveX = event.clientX - diffX;
+                    var moveY = event.clientY - diffY;
+                    // 地图的拖拽可能是多个方向一起运动，所以X轴和Y轴分开判断
+                    if(moveX < 0 && moveX > document.documentElement.clientWidth - drag.offsetWidth){
+                        drag.style.left = moveX + 'px';
+                    }
+                    if(moveY < 0 && moveY > document.documentElement.clientHeight - drag.offsetHeight){
+                        drag.style.top = moveY + 'px';
+                    }
+                }
+                document.onmouseup = function(event){
+                    this.onmousemove = null;
+                    this.onmouseup = null;
+                    //console.log("up");
+                    //修复低版本ie bug  
+                    if(typeof drag.releaseCapture!='undefined'){  
+                    drag.releaseCapture();
+                    }  
+                }
+            }
+        }
+    </script>
+</body>
+</html>

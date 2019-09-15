@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        .circle{ width: 500px; height: 500px; position: relative; border: 1px solid #000; }
+        .circle:before, .circle:after{ content: ""; display: block; width: 0; height: 0; border-radius: 100%; position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); background-color: green;}
+        .circle:before{ animation: circleAnimate 3s ease 1.5s infinite normal running none; } 
+        .circle:after{ animation: circleAnimate 3s ease 1s infinite normal running none; }
+        @keyframes circleAnimate{
+            from{ width: 0; height: 0; opacity: 1; }
+            to{ width: 500px; height: 500px; opacity: 0; }
+        }
+    </style>
+    <title>波纹</title>
+</head>
+<body>
+    <div class="circle"></div>
+</body>
+</html>

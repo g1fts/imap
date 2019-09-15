@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <style>
+        .box{ width: 300px; height: 300px; background: red; }
+        .box::after{ content: ""; display: block; clear: both; }
+        .box1{ width: 100px; height: 100px; background: green; }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <button class="btn" id="btn">显示隐藏</button>
+    <div class="box" id="box">
+        <div class="box1" id="box1">1</div>
+        <div class="box1">2</div>
+        <div class="box1">3</div>
+        <div class="box1">4</div>
+        <div class="box1">5</div>
+        <div class="box1">6</div>
+    </div>
+    <script>
+        var oDiv = document.getElementById("box");
+        var oDiv1 = document.getElementById("box1");
+        var oBtn = document.getElementById("btn");
+        var divs = document.getElementsByClassName("box1");
+        console.log(divs);
+        // for(var i=0;i<divs.length;i++){
+        //     document.onclick = function(j){
+        //         return function(){
+        //             console.log(divs[j]);
+        //             if(event.target == divs[j]){
+        //                 console.log(j);
+        //             }
+        //         }
+        //     }(i)
+        // }
+        document.addEventListener("click",function(e){
+            var e = event || window.event;  
+            var target = e.target || e.srcElement;
+            for(var i = 0; i < divs.length; i++){  
+                if(divs[i] == target){  
+                    console.log(divs[i]);  
+                }  
+            }
+            // if(target !== divs[i] && target !== oBtn){
+            //     console.log(divs[i]);
+            // }
+        })
+        
+        //oDiv.style.visibility = "hidden";
+        oBtn.onclick = function(){
+            if(oDiv.style.visibility == "hidden"){
+                oDiv.style.visibility = "visible";
+                console.log(111);
+            }else{
+                oDiv.style.visibility = "hidden";
+                console.log(222);
+            }
+        }
+        oDiv.onclick = function(){
+            console.log("DIV被点击了！");
+        }
+        oDiv1.onclick = function(){
+            console.log("DIV1 被点击了");
+            event.stopPropagation();
+        }
+    </script>
+</body>
+</html>

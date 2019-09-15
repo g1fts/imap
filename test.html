@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./css/imap.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="imap" id="drag">
+        <div class="dialog">
+            <div class="dialogTop">
+                <div class="dialogTitle">大关中学教育集团</div>
+                <button class="dialogClose">x</button>
+            </div>
+            <div class="dialogContent">
+                小河园区： 赵伍路以东、大关路以北   一类服务区：小河佳苑；  二类服务区：和新南苑、和新北苑、打铁弄、广兴新村、和睦坊<br>
+                西塘河园区:  登云路以南、小河路以西   凯德龙湾、视界、名城燕园、嘉泰馨庭、天阳上河<br>
+                京杭幼儿园： 三宝新村、董家弄、董家新村、台公堂、和睦路、磁带厂宿舍、浪琴翠苑、龙门公寓、科技公寓、协安景上、明真宫、凯德湖墅、大关公寓、吉兴公寓、都景公寓、莫干山路350、351、352号
+            </div>
+        </div>
+        <div class="ipoint">
+            <div class="icircle"></div>
+            <div class="igroup">
+                大关中学教育集团
+            </div>
+        </div>
+        <div class="schools">
+            <div class="school">大关中学（董家校区）</div>
+        </div>
+    </div>
+    <div class="guide">
+        <div class="gItem">
+            <div class="gItemCircle"></div>
+            <div class="gItemIcon"></div>
+            <div class="gItemName">大关中学教育集团</div>
+        </div>
+    </div>
+    <script>
+        window.onload = function(){
+            var drag = document.getElementById('drag');
+            // //点击某物体时，用drag对象即可，move和up是全局区域，
+            // 也就是整个文档通用，应该使用document对象而不是drag对象(否则，采用drag对象时物体只能往右方或下方移动)  
+            drag.onmousedown = function(event){
+                var event = event || window.event;  //兼容IE浏览器
+               //鼠标点击物体那一刻相对于物体左侧边框的距离=点击时的位置相对于浏览器最左边的距离-物体左边框相对于浏览器最左边的距离
+                var diffX = event.clientX - drag.offsetLeft;
+                var diffY = event.clientY - drag.offsetTop;
+                if(typeof drag.setCapture !== 'undefined'){
+                        drag.setCapture(); 
+                }
+                document.onmousemove = function(event){
+                    var event = event || window.event;
+                    var moveX = event.clientX - diffX;
+                    var moveY = event.clientY - diffY;
+                    // 地图的拖拽可能是多个方向一起运动，所以X轴和Y轴分开判断
+                    if(moveX < 0 && moveX > document.documentElement.clientWidth - drag.offsetWidth){
+                        drag.style.left = moveX + 'px';
+                    }
+                    if(moveY < 0 && moveY > document.documentElement.clientHeight - drag.offsetHeight){
+                        drag.style.top = moveY + 'px';
+                    }
+                }
+                document.onmouseup = function(event){
+                    this.onmousemove = null;
+                    this.onmouseup = null;
+                    //修复低版本ie bug  
+                    if(typeof drag.releaseCapture!='undefined'){  
+                    drag.releaseCapture();  
+                    }  
+                }
+            }
+        }
+    </script>
+</body>
+</html>
