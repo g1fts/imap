@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        *{ margin: 0; padding: 0; }
+        #box{ background: red; width: 100px; height: 100px; position: absolute; }
+    </style>
+    <title>PC端与移动端滑动</title>
+</head>
+<body>
+    <div id="box"></div>
+
+
+    <script>
+        var flag = false;
+        var cur = {
+            x: 0,
+            y: 0
+        },
+        var moveX,moveY,curX,;
+        var oDiv = document.getElementById("box");
+
+        oDiv.addEventListener("mousedown",function(){
+            console.log("mousedown 触发了！");
+        })
+        oDiv.addEventListener("mousemove",function(){
+            console.log("mousemove 触发了！");
+        })
+        oDiv.addEventListener("mouseup",function(){
+            console.log("mouseup 触发了！");
+        })
+        oDiv.addEventListener("touchstart",function(){
+            console.log("touchstart 触发了！");
+        })
+        oDiv.addEventListener("touchmove",function(){
+            console.log("touchmove 触发了！");
+        })
+
+    </script>
+</body>
+</html>

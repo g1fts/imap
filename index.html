@@ -149,6 +149,31 @@
             }
         })
 
+        function IsPC() {
+            var userAgentInfo = navigator.userAgent;
+            var Agents = ["Android", "iPhone",
+                        "SymbianOS", "Windows Phone",
+                        "iPad", "iPod"];
+            var flag = true;
+            for (var v = 0; v < Agents.length; v++) {
+                if (userAgentInfo.indexOf(Agents[v]) > 0) {
+                    flag = false;
+                    console.log("移动端");
+                    guide.style.bottom = -guide.offsetHeight + "px";
+                    guide.addEventListener("click",function(){
+                        if(guide.className == "guide"){
+                            guide.style.bottom = 0;
+                            guide.className = "guide active";
+                        }else{
+                            guide.style.bottom = -guide.offsetHeight + "px";
+                            guide.className = "guide";
+                        }
+                    })
+                }
+            }
+            return flag;
+        }
+
         function dialogInner(data){
             var tab = ""
             if(data.school){
@@ -193,7 +218,7 @@
         }
 
         function dialogInfo(item){
-            dialog.style.left = item.x-200 + "px";
+            dialog.style.left = item.x-dialog.offsetWidth/2 + "px";
             dialog.style.bottom = drag.offsetHeight-item.y+10 + "px";
             dialogTitle.innerText = item.name;
             dialog.style.visibility = "visible";
@@ -225,6 +250,7 @@
             drag.style.left = -(drag.offsetWidth - iClientWidth)/2 + "px";
             drag.style.top = -(drag.offsetHeight - iClientHeight)/2 + "px";
             mapDrag();
+            IsPC();
         }
         // 地图拖拽方法
         function mapDrag(){
@@ -235,14 +261,14 @@
                //鼠标点击物体那一刻相对于物体左侧边框的距离=点击时的位置相对于浏览器最左边的距离-物体左边框相对于浏览器最左边的距离
                 var diffX = event.clientX - drag.offsetLeft;
                 var diffY = event.clientY - drag.offsetTop;
-                //console.log("down");
+                console.log("down");
                 if(typeof drag.setCapture !== 'undefined'){
-                        drag.setCapture(); 
+                    drag.setCapture(); 
                 }
                 document.onmousemove = function(event){
                     drag.style.transition = "all 0s";
                     dClose();
-                    //console.log("move");
+                    console.log("move");
                     var event = event || window.event;
                     var moveX = event.clientX - diffX;
                     var moveY = event.clientY - diffY;
@@ -257,7 +283,7 @@
                 document.onmouseup = function(event){
                     this.onmousemove = null;
                     this.onmouseup = null;
-                    //console.log("up");
+                    console.log("up");
                     //修复低版本ie bug  
                     if(typeof drag.releaseCapture!='undefined'){  
                     drag.releaseCapture();
