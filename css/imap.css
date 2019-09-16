@@ -71,8 +71,7 @@ html, body, p, a{ margin: 0; padding: 0; }
         content: "展开集团列表"; white-space: nowrap; display: block; position: absolute; right: 0; top: -40px; background: rgba(0, 0, 0, .8); color: #fff; line-height: 20px; font-size: 14px; padding: 10px; border-radius: 10px 0 0 0; cursor: pointer; 
     }
     .guide.active::before{
-        content: "";
-        padding: 0;
+        content: "收起集团列表";
     }
     .guideItem{
         height: 40px; padding-left: 90px;
