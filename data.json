@@ -12,6 +12,7 @@
         "rise":"",
         "phone":"",
         "tips":"",
+        "images":"",
         "school":[
             {
                 "name":"大关中学（董家校区）",
@@ -25,7 +26,8 @@
                 "range1":"",
                 "rise":"德胜小学、外语实验小学、大关苑第一小学、树人小学部分",
                 "tips":"",
-                "phone":""
+                "phone":"",
+                "images":""
             },
             {
                 "name":"大关实验中学(郭家厍新校区)",
@@ -39,7 +41,8 @@
                 "range1":"",
                 "rise":"大关中学附属小学、区教师进修学校附属学校、卖鱼桥小学霞湾校区和文澜校区",
                 "tips":"",
-                "phone":""
+                "phone":"",
+                "images":""
             },
             {
                 "name":"大关中学（霞湾地块）(筹)",
@@ -53,7 +56,8 @@
                 "range1":"",
                 "rise":"",
                 "tips":"",
-                "phone":""
+                "phone":"",
+                "images":""
             },
             {
                 "name":"大关中学附属小学",
@@ -67,7 +71,8 @@
                 "range1":"1.湖墅北路以西，大关路以南，教工路以东，余杭塘路与草营巷以北；2.莫干山路以西，民生药厂西侧小河东南，余杭塘路以北",
                 "rise":"",
                 "tips":"报名请携带报名材料：房产证及复印件、户口簿及复印件、预防接种卡！",
-                "phone":"56306521 56306517"
+                "phone":"56306521 56306517",
+                "images":""
             }
         ]
     },
@@ -84,6 +89,7 @@
         "rise":"",
         "phone":"",
         "tips":"",
+        "images":"",
         "school":[
             {
                 "name":"蓓蕾幼儿园（小河园区）",
@@ -97,7 +103,8 @@
                 "range1":"",
                 "rise":"",
                 "tips":"",
-                "phone":"2222-2222"
+                "phone":"2222-2222",
+                "images":""
             },
             {
                 "name":"蓓蕾幼儿园（西塘河园区）",
@@ -111,7 +118,8 @@
                 "range1":"",
                 "rise":"",
                 "tips":"",
-                "phone":"3333-3333"
+                "phone":"3333-3333",
+                "images":""
             },
             {
                 "name":"蓓蕾-京杭幼儿园",
@@ -125,7 +133,8 @@
                 "range1":"",
                 "rise":"",
                 "tips":"",
-                "phone":"4444-4444"
+                "phone":"4444-4444",
+                "images":""
             },
             {
                 "name":"蓓蕾-××幼儿园（金茂府）(筹)",
@@ -139,7 +148,8 @@
                 "range1":"",
                 "rise":"",
                 "tips":"",
-                "phone":""
+                "phone":"",
+                "images":""
             }
         ]
     },
@@ -156,6 +166,7 @@
         "rise":"",
         "phone":"",
         "tips":"",
+        "images":"",
         "school":[
             {
                 "name":"育才中学",
@@ -169,7 +180,8 @@
                 "range1":"",
                 "rise":"",
                 "tips":"",
-                "phone":""
+                "phone":"",
+                "images":""
             },
             {
                 "name":"锦绣中学",
@@ -183,7 +195,8 @@
                 "range1":"",
                 "rise":"",
                 "tips":"",
-                "phone":""
+                "phone":"",
+                "images":""
             },
             {
                 "name":"锦绣育才附属小学",
@@ -197,7 +210,8 @@
                 "range1":"",
                 "rise":"",
                 "tips":"",
-                "phone":""
+                "phone":"",
+                "images":"<img src='./images/schoolTest.jpg' />"
             },
             {
                 "name":"育才京杭小学",
@@ -211,7 +225,8 @@
                 "range1":"",
                 "rise":"",
                 "tips":"报名请携带报名材料：房产证及复印件、户口簿及复印件、预防接种卡！",
-                "phone":"88176526"
+                "phone":"88176526",
+                "images":"<img src='./images/schoolTest.jpg' />"
             },
             {
                 "name":"育才登云小学（筹）",
@@ -225,7 +240,8 @@
                 "range1":"",
                 "rise":"",
                 "tips":"报名请携带报名材料：房产证及复印件、户口簿及复印件、预防接种卡！",
-                "phone":"88178623"
+                "phone":"88178623",
+                "images":"<img src='./images/schoolTest.jpg' />"
             }
         ]
     },
@@ -242,6 +258,7 @@
         "range1":"",
         "phone":"",
         "tips":"",
+        "images":"",
         "school":[
             {
                 "name":"大关小学（莫干山路校区）",
@@ -255,7 +272,8 @@
                 "range1":"1.石祥路以北祥符街道区域内适龄儿童;2.石祥路以南，湖州街以北，西塘河以东，通益路以西区域内适龄儿童;3.石祥路以南，西塘河以西祥符街道区域内适龄儿童",
                 "rise":"",
                 "tips":"报名请携带报名材料：房产证及复印件、户口簿及复印件、预防接种卡！",
-                "phone":"87383240 87383283"
+                "phone":"87383240 87383283",
+                "images":"<img src='./images/schoolTest.jpg' />"
             },
             {
                 "name":"大关小学（申花校区）",
@@ -269,7 +287,8 @@
                 "range1":"",
                 "rise":"",
                 "tips":"报名请携带报名材料：房产证及复印件、户口簿及复印件、预防接种卡！",
-                "phone":"56053510 56053514"
+                "phone":"56053510 56053514",
+                "images":"<img src='./images/schoolTest.jpg' />"
             },
             {
                 "name":"大关小学（民生药业地块）(筹)",
@@ -283,7 +302,8 @@
                 "range1":"",
                 "rise":"",
                 "tips":"",
-                "phone":""
+                "phone":"",
+                "images":"<img src='./images/schoolTest.jpg' />"
             }
         ]
     },
@@ -300,6 +320,7 @@
         "rise":"",
         "phone":"",
         "tips":"",
+        "images":"",
         "school":[
             {
                 "name":"文晖中学",
@@ -313,7 +334,8 @@
                 "range1":"",
                 "rise":"建新小学、大关小学、卖鱼桥小学",
                 "tips":"",
-                "phone":""
+                "phone":"",
+                "images":""
             },
             {
                 "name":"长阳中学",
@@ -327,7 +349,8 @@
                 "range1":"",
                 "rise":"长阳小学、星澜小学",
                 "tips":"",
-                "phone":""
+                "phone":"",
+                "images":""
             },
             {
                 "name":"文晖实验中学（筹）",
@@ -341,7 +364,8 @@
                 "range1":"",
                 "rise":"",
                 "tips":"",
-                "phone":""
+                "phone":"",
+                "images":""
             }
         ]
     },
@@ -358,6 +382,7 @@
         "rise":"",
         "phone":"88161670 88265026",
         "tips":"报名请携带报名材料：房产证及复印件、户口簿及复印件、预防接种卡！",
+        "images":"",
         "school":[
             {
                 "name":"拱宸桥小学（永宁校区）",
@@ -371,7 +396,8 @@
                 "range1":"",
                 "rise":"",
                 "tips":"",
-                "phone":""
+                "phone":"",
+                "images":"<img src='./images/schoolTest.jpg' />"
             },
             {
                 "name":"拱宸桥小学（左岸校区）",
@@ -385,7 +411,8 @@
                 "range1":"",
                 "rise":"",
                 "tips":"",
-                "phone":""
+                "phone":"",
+                "images":"<img src='./images/schoolTest.jpg' />"
             },
             {
                 "name":"拱宸桥-××小学（孔家埭）(筹)",
@@ -399,7 +426,8 @@
                 "range1":"",
                 "rise":"",
                 "tips":"",
-                "phone":""
+                "phone":"",
+                "images":"<img src='./images/schoolTest.jpg' />"
             }
         ]
     },
@@ -416,6 +444,7 @@
         "rise":"",
         "phone":"",
         "tips":"",
+        "images":"",
         "school":[
             {
                 "name":"卖鱼桥小学（湖墅校区）",
@@ -429,7 +458,8 @@
                 "range1":"",
                 "rise":"",
                 "tips":"报名请携带报名材料：房产证及复印件、户口簿及复印件、预防接种卡！",
-                "phone":"56324662 56831606"
+                "phone":"56324662 56831606",
+                "images":"<img src='./images/schoolTest.jpg' />"
             },
             {
                 "name":"卖鱼桥小学（文澜校区）",
@@ -443,7 +473,8 @@
                 "range1":"",
                 "rise":"",
                 "tips":"",
-                "phone":""
+                "phone":"",
+                "images":"<img src='./images/schoolTest.jpg' />"
             },
             {
                 "name":"卖鱼桥第二小学(新霞湾校区)(筹)",
@@ -457,7 +488,8 @@
                 "range1":"",
                 "rise":"",
                 "tips":"报名请携带报名材料：房产证及复印件、户口簿及复印件、预防接种卡！",
-                "phone":"56324662 56831606"
+                "phone":"56324662 56831606",
+                "images":"<img src='./images/schoolTest.jpg' />"
             },
             {
                 "name":"卖鱼桥-星澜小学",
@@ -471,7 +503,8 @@
                 "range1":"",
                 "rise":"",
                 "tips":"报名请携带报名材料：房产证及复印件、户口簿及复印件、预防接种卡！",
-                "phone":"56009601 56009560"
+                "phone":"56009601 56009560",
+                "images":"<img src='./images/schoolTest.jpg' />"
             },
             {
                 "name":"卖鱼桥-文津小学",
@@ -485,7 +518,8 @@
                 "range1":"",
                 "rise":"",
                 "tips":"报名请携带报名材料：房产证及复印件、户口簿及复印件、预防接种卡！",
-                "phone":"56009553"
+                "phone":"56009553",
+                "images":"<img src='./images/schoolTest.jpg' />"
             },
             {
                 "name":"卖鱼桥-××小学（桃源地块）（筹）",
@@ -499,7 +533,8 @@
                 "range1":"",
                 "rise":"",
                 "tips":"",
-                "phone":""
+                "phone":"",
+                "images":"<img src='./images/schoolTest.jpg' />"
             }
         ]
     },
@@ -516,6 +551,7 @@
         "rise":"",
         "phone":"",
         "tips":"",
+        "images":"",
         "school":[
             {
                 "name":"红缨幼儿园（仓基园区）",
@@ -529,7 +565,8 @@
                 "range1":"",
                 "rise":"",
                 "tips":"",
-                "phone":"5555-5555"
+                "phone":"5555-5555",
+                "images":""
             },
             {
                 "name":"红缨幼儿园（大关园区）",
@@ -543,7 +580,8 @@
                 "range1":"",
                 "rise":"",
                 "tips":"",
-                "phone":"6666-6666"
+                "phone":"6666-6666",
+                "images":""
             },
             {
                 "name":"红缨幼儿园（西岸园区）",
@@ -557,7 +595,8 @@
                 "range1":"",
                 "rise":"",
                 "tips":"",
-                "phone":"7777-7777"
+                "phone":"7777-7777",
+                "images":""
             },
             {
                 "name":"红缨幼儿园（西岸新园）(筹)",
@@ -571,7 +610,8 @@
                 "range1":"",
                 "rise":"",
                 "tips":"",
-                "phone":""
+                "phone":"",
+                "images":""
             },
             {
                 "name":"红缨新城实验幼儿园",
@@ -585,7 +625,8 @@
                 "range1":"",
                 "rise":"",
                 "tips":"",
-                "phone":"8888-8888"
+                "phone":"8888-8888",
+                "images":""
             },
             {
                 "name":"红缨新城-××园区（西杨村）(筹)",
@@ -599,7 +640,8 @@
                 "range1":"",
                 "rise":"",
                 "tips":"",
-                "phone":""
+                "phone":"",
+                "images":""
             },
             {
                 "name":"红缨-××幼儿园（天马）(筹)",
@@ -613,7 +655,8 @@
                 "range1":"",
                 "rise":"",
                 "tips":"",
-                "phone":"8888-8888"
+                "phone":"8888-8888",
+                "images":""
             }
         ]
     },
@@ -630,6 +673,7 @@
         "rise":"",
         "phone":"",
         "tips":"",
+        "images":"",
         "school":[
             {
                 "name":"文澜中学",
@@ -643,7 +687,8 @@
                 "range1":"",
                 "rise":"",
                 "tips":"",
-                "phone":""
+                "phone":"",
+                "images":""
             },
             {
                 "name":"文澜小学",
@@ -657,7 +702,8 @@
                 "range1":"",
                 "rise":"",
                 "tips":"报名请携带报名材料：房产证及复印件、户口簿及复印件、预防接种卡！",
-                "phone":"88012097 88010752"
+                "phone":"88012097 88010752",
+                "images":"<img src='./images/schoolTest.jpg' />"
             },
             {
                 "name":"文澜第二小学(筹)",
@@ -671,7 +717,8 @@
                 "range1":"",
                 "rise":"",
                 "tips":"",
-                "phone":""
+                "phone":"",
+                "images":"<img src='./images/schoolTest.jpg' />"
             }
         ]
     },
@@ -688,6 +735,7 @@
         "rise":"",
         "phone":"",
         "tips":"",
+        "images":"",
         "school":[
             {
                 "name":"文华幼儿园",
@@ -701,7 +749,8 @@
                 "range1":"",
                 "rise":"",
                 "tips":"",
-                "phone":"9999-9999"
+                "phone":"9999-9999",
+                "images":""
             },
             {
                 "name":"文华-长乐幼儿园",
@@ -715,7 +764,8 @@
                 "range1":"",
                 "rise":"",
                 "tips":"",
-                "phone":"9999-9999"
+                "phone":"9999-9999",
+                "images":""
             },
             {
                 "name":"文华-文锦幼儿园",
@@ -729,7 +779,8 @@
                 "range1":"",
                 "rise":"",
                 "tips":"",
-                "phone":"9999-9999"
+                "phone":"9999-9999",
+                "images":""
             },
             {
                 "name":"文华-××幼儿园（东沃）（筹）",
@@ -743,7 +794,8 @@
                 "range1":"",
                 "rise":"",
                 "tips":"",
-                "phone":""
+                "phone":"",
+                "images":""
             }
         ]
     }

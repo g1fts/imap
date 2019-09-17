@@ -44,6 +44,7 @@ html, body, p, a{ margin: 0; padding: 0; }
 
 .schoolTitle{ background-color: rgb(236, 236, 236); font-weight: bold; padding: 0 10px; line-height: 40px;  }
 .schoolContent{ padding: 10px; }
+.schoolContent img{ width: 100%; }
 
 @keyframes icircleAnimate{
     from{

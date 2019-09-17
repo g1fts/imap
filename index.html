@@ -69,11 +69,11 @@
                     iCircles.appendChild(pointDiv);
 
                     //添加范围圈
-                    var circleDiv = document.createElement("div");
-                    circleDiv.className = "iCircle";
-                    circleDiv.style.width = circleDiv.style.height = data[i].d + "px";
-                    circleDiv.style.background = "radial-gradient(rgba("+data[i].color+",0),"+"rgba("+data[i].color+",1))";
-                    pointDiv.appendChild(circleDiv);
+                    // var circleDiv = document.createElement("div");
+                    // circleDiv.className = "iCircle";
+                    // circleDiv.style.width = circleDiv.style.height = data[i].d + "px";
+                    // circleDiv.style.background = "radial-gradient(rgba("+data[i].color+",0),"+"rgba("+data[i].color+",1))";
+                    // pointDiv.appendChild(circleDiv);
 
                     //添加集团详细数据
                     var groupDiv = document.createElement("div");
@@ -194,6 +194,9 @@
             }
             tab = tab + '</table>';
             var sInner = "";
+            if(data.images != ""){
+                sInner = sInner + "<div class='schoolTitle'>学校地图</div><div class='schoolContent'>" + data.images + "</div>"
+            }
             if(data.range != ""){
                 sInner = sInner + "<div class='schoolTitle'>户籍儿童教育服务区</div><div class='schoolContent'>" + data.range + "</div>"
             }
