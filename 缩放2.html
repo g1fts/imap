@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1,minimum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        *{ margin: 0; padding: 0; touch-action: pan-y;}
+        html, body{ width: 100%; height: 100%;; position: relative; overflow: hidden; }
+        #box{ width: 2823px; height: 2990px; position: absolute; background: url(./images/bg.jpg) no-repeat; background-size: 100% 100%; transition: all 0.3s; }
+        #p1{ position: absolute; background: rebeccapurple; transition: all 0.1s; }
+        #plus{ width: 100px; height: 100px; background-color: white; position: absolute; left: 0; bottom: 0; }
+    </style>
+    <title>缩放兼容2</title>
+</head>
+<body>
+    
+    <div id="box">
+        <div id="p1" style="width: 50px; height: 50px;
+        left: 100px; top: 100px;"></div>
+
+        
+    </div>
+    <a href="javascript:;" id="plus">+</a>
+    <script>
+        
+        var iClientWidth = document.body.clientWidth;
+        var iClientHeight = document.body.clientHeight;
+        var iBox = document.getElementById("box");
+        var iP1 = document.getElementById("p1");
+        var iSetWidth = iDWidth = iBox.offsetWidth;
+        var iSetHeight = iDHeight = iBox.offsetHeight;
+        var iStep = 0;
+        var iStepMax = 2;
+        var iRate = null;
+        var iRateMath = null;
+
+        if(iClientWidth > iClientHeight){
+            iRate = Math.round(iClientWidth / iDWidth * 1000);
+        }else{
+            iRate = Math.round(iClientHeight / iDHeight * 1000);
+        }
+        iRateMath = iRate / 1000;
+        iRateStep = (1000 - iRate) / iStepMax;
+        iBox.style.width = iDWidth * iRateMath + "px";
+        iBox.style.height = iDHeight * iRateMath + "px";
+        var iP1Left = iP1.offsetLeft;
+        var iP1Top = iP1.offsetTop;
+        iP1.style.left = iP1Left * iRateMath + "px";
+        iP1.style.top = iP1Top * iRateMath + "px";
+        
+
+        //缩放事件
+        var isScale = true;
+        //放大方法
+        function scaleFD(e){
+            iBox.style.left = "0px";
+            iBox.style.top = "0px";
+            if(iStep < iStepMax){
+                iStep++;
+                iRate = Math.round(iRate + iRateStep);
+                iRateMath = iRate / 1000;
+                iBox.style.width = iDWidth * iRateMath+ "px";
+                iBox.style.height = iDHeight * iRateMath+ "px";
+                iP1.style.left = iP1Left * iRateMath + "px";
+                iP1.style.top = iP1Top * iRateMath + "px";
+            }
+        }
+        //缩小方法
+        function scaleSX(){
+            iBox.style.left = "0px";
+            iBox.style.top = "0px";
+            if(iStep > 0){
+                iStep--;
+                iRate = Math.round(iRate - iRateStep);
+                iRateMath = iRate / 1000;
+                iBox.style.width = iDWidth * iRateMath+ "px";
+                iBox.style.height = iDHeight * iRateMath+ "px";
+                iP1.style.left = iP1Left * iRateMath + "px";
+                iP1.style.top = iP1Top * iRateMath + "px";
+            }
+        }
+        
+
+        //PC端 滚轮事件
+        document.addEventListener("mousewheel",function(e){
+            isScale = true;
+            isMove = false;
+            var e = event || window.event;
+            diffX = event.pageX - iBox.offsetLeft;
+            diffY = event.pageY - iBox.offsetTop;
+            if(isScale){
+                if(e.wheelDelta > 0){
+                    scaleFD();
+                    setTimeout(function(){
+                        isScale = true;
+                    },500);
+                }else{
+                    scaleSX();
+                    setTimeout(function(){
+                        isScale = true;
+                    },500);
+                };
+            }
+        });
+
+        //拖拽事件
+        var diffX = null;
+        var diffY = null;
+        var moveX = null;
+        var moveY = null;
+        var isMove = true;
+
+        //拖拽方法
+        function iMove(e){
+            moveX = e.pageX - diffX;
+            moveY = e.pageY - diffY;
+            if(moveX < 0 && moveX > iClientWidth - iBox.offsetWidth){
+                iBox.style.left = moveX + "px";
+            }
+            if(moveY < 0 && moveY > iClientHeight - iBox.offsetHeight){
+                iBox.style.top = moveY + "px";
+            }
+        }
+
+        //PC端 拖拽事件
+        //--鼠标按下
+        document.addEventListener("mousedown",function(e){
+            diffX = event.pageX - iBox.offsetLeft;
+            diffY = event.pageY - iBox.offsetTop;
+            //--鼠标拖动
+            document.addEventListener("mousemove",function(e){
+                if(isMove){
+                    iMove(event);
+                }
+            },false);
+        },false);
+        //--鼠标抬起
+        document.addEventListener("mouseup",function(e){
+            isScale = true;
+        },false);
+
+        //移动端 双指事件
+        var start = null;
+        var now = null;
+        document.addEventListener("touchstart",function(e){
+            if(e.touches.length >= 2){
+                //缩放
+                start = e.touches;
+                isMove = false;
+            }else{
+                //拖拽
+                diffX = e.touches[0].pageX - iBox.offsetLeft;
+                diffY = e.touches[0].pageY - iBox.offsetTop;
+                isScale = false;
+            };
+        },false);
+        document.addEventListener("touchmove",function(e){
+            var now = e.touches;
+            if(e.touches.length >= 2){
+                if(isScale){
+                    var val0 = getDistance(start[0],start[1]);
+                    var val1 = getDistance(now[0],now[1]);
+                    if(val0 < val1){
+                        scaleFD();
+                    }else{
+                        scaleSX();
+                    };
+                }
+            }else{
+                if(isMove){
+                    iMove(e.touches[0]);
+                }
+            }
+            
+        },false);
+        document.addEventListener("touchend",function(e){
+            isMove = true;
+            isScale = true;
+        })
+        //计算方法
+        function getDistance(p1, p2) {
+            var x = p2.pageX - p1.pageX,
+                y = p2.pageY - p1.pageY;
+            return Math.sqrt((x * x) + (y * y));
+        };
+    </script>
+</body>
+</html>

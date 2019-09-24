@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1,minimum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <style>
+        *{ margin: 0; padding: 0; touch-action: pan-y;}
+        html, body{ width: 100%; height: 100%;; position: relative; overflow: hidden; }
+        #box{ width: 300px; height: 300px; position: absolute; background-color: black; }
+    </style>
+    <title>手机端缩放</title>
+</head>
+<body>
+    
+    <div id="box"></div>
+    <script>
+        function setGesture(el){
+            var obj={}; //定义一个对象
+            var istouch=false;
+            var start=[];
+            var scale = null;
+            var rotation = null;
+            el.addEventListener("touchstart",function(e){
+                if(e.touches.length>=2){  //判断是否有两个点在屏幕上
+                    istouch=true;
+                    start=e.touches;  //得到第一组两个点
+                    obj.gesturestart&&obj.gesturestart.call(el,e); //执行gesturestart方法
+                };
+            },false);
+            document.addEventListener("touchmove",function(e){
+                e.preventDefault();
+                if(e.touches.length>=2&&istouch){
+                    console.log(1);
+                    var now=e.touches;  //得到第二组两个点
+                    scale=getDistance(now[0],now[1])/getDistance(start[0],start[1]); //得到缩放比例，getDistance是勾股定理的一个方法
+                    rotation=getAngle(now[0],now[1])-getAngle(start[0],start[1]);  //得到旋转角度，getAngle是得到夹角的一个方法
+                    e.scale=scale.toFixed(2);
+                    e.rotation=rotation.toFixed(2);
+                    obj.gesturemove&&obj.gesturemove.call(el,e);  //执行gesturemove方法
+                };
+            },false);
+            document.addEventListener("touchend",function(e){
+                if(istouch){
+                    istouch=false;
+                    obj.gestureend&&obj.gestureend.call(el,e);  //执行gestureend方法
+                };
+            },false);
+            return obj;
+        };
+        function getDistance(p1, p2) {
+            var x = p2.pageX - p1.pageX,
+                y = p2.pageY - p1.pageY;
+            return Math.sqrt((x * x) + (y * y));
+        };
+        function getAngle(p1, p2) {
+            var x = p1.pageX - p2.pageX,
+                y = p1.pageY- p2.pageY;
+            return Math.atan2(y, x) * 180 / Math.PI;
+        };
+
+        var box=document.querySelector("#box");
+        var boxGesture=setGesture(box);  //得到一个对象
+        boxGesture.gesturestart=function(e){  //双指开始
+            box.style.backgroundColor="yellow";
+            box.style.transform="scale("+e.scale+") rotate("+e.rotation+"deg)";//改变目标元素的大小和角度
+        };
+        boxGesture.gesturemove=function(e){  //双指移动
+            box.innerHTML = e.scale+"<br />"+e.rotation;
+            box.style.transform="scale("+e.scale+") rotate("+e.rotation+"deg)";//改变目标元素的大小和角度
+        };
+        boxGesture.gestureend=function(e){  //双指结束
+            box.innerHTML="";
+            box.style.cssText="background-color:red";
+            box.style.transform="scale("+e.scale+") rotate("+e.rotation+"deg)";//改变目标元素的大小和角度
+        };
+    </script>
+</body>
+</html>

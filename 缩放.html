@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,minimum-scale=1, user-scalable=no">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        *{ margin: 0; padding: 0;}
+		html, body{ width: 100%; height: 100%; overflow: hidden; position: relative; }
+		.iMap{ width: 2823px; height: 2990px; position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); background:url(./images/bg.jpg) no-repeat; background-size: 100% 100%; transition: ease all 1s; }
+    </style>
+    <title>缩放</title>
+</head>
+<body>
+    <div class="iMap" id="iMap">
+        <div style="width: 10px; height: 10px; background-color:red; position: absolute; left: 1000px; top: 1000px;"></div>
+
+    </div>
+
+    <script>
+        var iClientWidth = parseFloat(document.documentElement.clientWidth);
+        var iClientHeight = parseFloat(document.documentElement.clientHeight);
+        var iMap = document.getElementById("iMap");
+        var iSetWidth = iMap.offsetWidth;
+        var iSetHeight = iMap.offsetHeight;
+        var iScrollWidth = iMap.scrollWidth;
+        var iScrollHeight = iMap.scrollHeight;
+        var iRateDefault = 0;
+        var iRate = 0;
+        var doScroll = true;
+        var timer = null;
+        
+        if(screen.width>screen.height){
+            iRateDefault = iRate = iClientWidth / iSetWidth;
+        }else{
+            iRateDefault = iRate = iClientHeight / iSetHeight;
+        }
+        iMap.style.width = iSetWidth * iRateDefault + "px";
+        iMap.style.height = iSetHeight * iRateDefault + "px";
+        iMap.setAttribute("data-rate",iRate);
+
+        iRateStep = (1 - iRate)/3;
+
+        // 阻止双击放大
+        // var lastTouchEnd = 0;
+        // document.addEventListener('touchstart', function(event) {
+        //     if (event.touches.length > 1) {
+        //         event.preventDefault();
+        //         addEvent(iMap,"gesturestart",onMouseWheel);
+        //     }
+        // });
+        // document.addEventListener('touchend', function(event) {
+        //     var now = (new Date()).getTime();
+        //     if (now - lastTouchEnd <= 300) {
+        //         event.preventDefault();
+        //     }
+        //     lastTouchEnd = now;
+        // }, false);
+
+        // 阻止双指放大
+        // document.addEventListener('gesturestart', function(event) {
+        //     event.preventDefault();
+            
+        // });
+
+        addEvent(iMap,"mousewheel",onMouseWheel);
+        addEvent(iMap,"DOMMouseScroll",onMouseWheel);
+        //addEvent(document,"dblclick",onMouseWheel);
+        var lastTouchEnd = 0;
+        var now = 0;
+        document.addEventListener("touchstart",function(e){
+            if(e.touches == 2){
+                e.preventDefault();
+                onMouseWheel();
+            }
+        })
+        document.addEventListener('gesturestart', function(event) {
+            //event.preventDefault();
+            onMouseWheel();
+            //alert(1);
+        });
+
+        //滚轮事件
+        function onMouseWheel(ev){
+            var ev = ev || window.event;
+            var now  = ev.touches[0];
+            var down = true;
+            if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+                if(e.touches >= 2){
+                }
+            }else{
+                down = ev.wheelDelta ? ev.wheelDelta < 0 : ev.detail > 0;
+            }
+            if(doScroll){
+                if(down){
+                    iRate = parseFloat(iMap.getAttribute("data-rate"));
+                    if(iRate < 1){
+                        doScroll = false;
+                        iRate = iRate + iRateStep;
+                        iMap.style.width = iSetWidth * iRate + "px";
+                        iMap.style.height = iSetHeight * iRate + "px";
+                        iMap.setAttribute("data-rate",iRate);
+                        console.log("鼠标向上滚动了1次！" + iRateDefault);
+                        alert(1);
+                        timer = setTimeout(function(){
+                            doScroll = true;
+                        },500)
+                    }
+                }else{
+                    iRate = parseFloat(iMap.getAttribute("data-rate"));
+                    if(iRate > iRateDefault){
+                        doScroll = false;
+                        iRate = iRate - iRateStep;
+                        iMap.style.width = iSetWidth * iRate + "px";
+                        iMap.style.height = iSetHeight * iRate + "px";
+                        iMap.setAttribute("data-rate",iRate);
+                        console.log("鼠标向上滚动了1次！" + iRateDefault);
+                        timer = setTimeout(function(){
+                            doScroll = true;
+                        },500)
+                    }
+                }
+                if(ev.preventDefault){
+                    ev.preventDefault();
+                }
+            }
+            return false;
+        }
+        //滚轮事件浏览器兼容
+        function addEvent(obj,xEvent,fn){
+            if(obj.attachEvent){
+                obj.attachEvent("on"+xEvent,fn);
+            }else{
+                obj.addEventListener(xEvent,fn,false);
+            }
+        }
+    </script>
+</body>
+</html>

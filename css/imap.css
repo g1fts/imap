@@ -1,7 +1,7 @@
 html, body{ width: 100%; height: 100%; position: relative; overflow: hidden; font-size: 12px; font-family: "Microsoft Yahei"; }
 html, body, p, a{ margin: 0; padding: 0; }
 
-.imap{ width: 2823px; height: 2990px; position: absolute; background: url(../images/bg.jpg) no-repeat center; cursor: move; }
+.imap{ width: 2823px; height: 2990px; position: absolute; background: url(../images/bg.jpg) no-repeat center; cursor: move; transition: all 0.3s; }
 .iCircles, .iSchools, .iGroups{ width: 100%; height: 100%; position: absolute; left: 0; top: 0;}
 .iCircles{ z-index: 1;}
 .iGroups{ z-index: 2; }
@@ -13,25 +13,22 @@ html, body, p, a{ margin: 0; padding: 0; }
 .ripple2{ animation: icircleAnimate 2s ease 0.5s infinite normal running none; } */
 .iGroup{ position: absolute; font-size: 32px; line-height: 48px; height: 50px; color: #fff; z-index: 1; white-space: nowrap; text-shadow: 1px 1px 2px #000; transform: translate(-50%,0); padding:0 0 0 60px; background: url(../images/daguanzhongxue.png) no-repeat left center; background-size: 50px 50px; cursor: pointer; user-select: none; z-index: 1; }
 
-.iSchool{ position: absolute; left: 300px; top: 300px; font-size: 20px; line-height: 20px; width: 0; height: 22px; overflow: hidden; color: rgba(255, 255, 255, .5); white-space: nowrap; text-shadow: 1px 1px 2px #000; padding:0 0 0 30px; background: url(../images/daguanzhongxue.png) no-repeat left center; background-size: 22px 22px; cursor: pointer; user-select: none; }
-.iSchool:hover{ width: auto; overflow: visible; }
+.iSchool{ width: 0px; position: absolute; left: 300px; top: 300px; font-size: 20px; line-height: 20px; height: 22px; overflow: hidden; color: #fff; white-space: nowrap; text-shadow: 1px 1px 2px #000; padding:0 0 0 30px; background: url(../images/daguanzhongxue.png) no-repeat left center; background-size: 22px 22px; cursor: pointer; user-select: none; transition: all 0.2s; }
+.iSchools.active .iSchool{ width: auto; }
 
-.dialog{ width: 400px; background-color: #fff; border-radius: 10px; box-shadow: 0px 0px 5px #fff; border: 1px solid #999; padding: 5px 10px; position: absolute; z-index: 100;  cursor: default; visibility: hidden; opacity: 0; transition: all .5s;}
-.dialog::after{ content: ""; display: block; width: 20px; height: 20px; background: #fff; box-shadow: 0px 0px 5px #fff; border:0px 0px 1px 1px solid #999; border-radius: 4px; position: absolute; left: 50%; bottom: -10px; transform: translate(-50%,0) rotate(45deg); }
+.dialog{ width: 400px; background-color: #fff; border-radius: 10px; box-shadow: 0px 0px 5px #fff; border: 1px solid #999; padding: 5px 10px; position: absolute; z-index: 100;  cursor: default; visibility: hidden; opacity: 0; transition: all .5s; left: 50%; top: 50%; transform: translate(-50%,-50%);}
+/* .dialog::after{ content: ""; display: block; width: 20px; height: 20px; background: #fff; box-shadow: 0px 0px 5px #fff; border:0px 0px 1px 1px solid #999; border-radius: 4px; position: absolute; left: 50%; bottom: -10px; transform: translate(-50%,0) rotate(45deg); } */
 .dialogTop{ width: 100%; height: 40px; border-bottom: 1px solid #d4d4d4; position: relative; }
-.dialogTitle{ line-height: 38px; font-size: 20px; color: #333;}
+.dialogTitle{ line-height: 38px; font-size: 18px; color: #333;}
 .dialogClose{ width: 40px; height: 40px; padding: 5px; margin: 0; background: none; font-size: 28px; line-height: 30px; border: 0; position: absolute; right: 0; top: 0; cursor: pointer; outline: 0; color: #d4d4d4; }
 .dialogClose:hover{ color: #333; }
-.dialogContent{ font-size: 14px; line-height: 24px; padding: 10px 0; color:#666; }
+.dialogContent{ font-size: 12px; line-height: 24px; padding: 10px 0; color:#666; }
 .dialogContent a{ color: rgb(0, 137, 250); display: inline-block; }
 
-.guide{ width: 400px; border-radius: 20px 0 0 0; box-shadow: 0px 0px 5px #fff; position: absolute; right: 0; bottom: 0; background: rgba(0, 0, 0, .8); z-index: 400; }
-.guideItem{ height: 70px; padding-left: 150px; cursor: pointer; position: relative; }
-.guideItem::after{ content: ""; display: block; clear: both; }
-.guideItemCircle, .guideItemIcon{ width: 50px; height: 50px; position: absolute; top: 10px; }
-.guideItemCircle{ border-radius: 100%; left: 20px; background: radial-gradient(rgba(255,255,255,0),rgba(255,255,255,1)); }
-.guideItemIcon{ left: 80px; background: url(../images/daguanzhongxue.png) no-repeat center; background-size: 50px 50px; }
-.guideItemName{ font-size: 24px; line-height: 68px; color: #fff; user-select: none; }
+.guide{ width: auto; border-radius: 20px 0 0 0; box-shadow: 0px 0px 5px #fff; position: absolute; right: 0; bottom: 0; background: rgba(0, 0, 0, .8); z-index: 400; padding: 10px; }
+.guideItem{ height: 60px; padding-left: 90px; cursor: pointer; position: relative; font-size: 20px; line-height: 58px; color: #fff; user-select: none; background-repeat: no-repeat; background-position: 20px center;  }
+.guide::after{ content: ""; display: block; width: 20px; padding: 5px 10px; line-height: 30px; text-align: center; color: #fff; background: rgba(0, 0, 0, .8); clear: both; font-size: 20px; position: absolute; left: -40px; bottom: 0; border-radius: 20px 0 0 0; box-shadow: -3px 0px 5px #fff; visibility: hidden; }
+.active.guide::after{ content: "返回集团"; visibility: visible; }
 
 .iTable{ width: 100%; margin: 10px 0; line-height: 24px; border-radius: 6px; overflow: hidden; box-shadow: 0px 0px 2px #999; }
 .iTable th{ padding: 10px; }
@@ -67,6 +64,7 @@ html, body, p, a{ margin: 0; padding: 0; }
     .guide{
         width: 200px;
         transition: bottom 0.5s;
+        display: none;
     }
     .guide::before{ 
         content: "展开集团列表"; white-space: nowrap; display: block; position: absolute; right: 0; top: -40px; background: rgba(0, 0, 0, .8); color: #fff; line-height: 20px; font-size: 14px; padding: 10px; border-radius: 10px 0 0 0; cursor: pointer; 

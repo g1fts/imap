@@ -492,6 +492,21 @@
                 "images":"<img src='./images/schoolTest.jpg' />"
             },
             {
+                "name":"卖鱼桥-星澜小学",
+                "x":"753",
+                "y":"1484",
+                "nature":"公办",
+                "icon":"./images/maiyuqiao.png",
+                "remarks":"",
+                "content":"",
+                "range":"石祥路以北，莫干山路以东，运河以西拱墅区域内户籍适龄儿童。（新文社区、星桥社区、总管堂社区中已拆迁安置的户籍生，在安置地对应小学就读）",
+                "range1":"",
+                "rise":"",
+                "tips":"报名请携带报名材料：房产证及复印件、户口簿及复印件、预防接种卡！",
+                "phone":"56009601 56009560",
+                "images":"<img src='./images/schoolTest.jpg' />"
+            },
+            {
                 "name":"卖鱼桥-文津小学",
                 "x":"886",
                 "y":"2287",

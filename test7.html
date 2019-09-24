@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1,minimum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <style>
+        *{ margin: 0; padding: 0; touch-action: pan-y;}
+        html, body{ position: relative; }
+        #box{ width: 100px; height: 100px; position: absolute; background-color: black; }
+    </style>
+    <title>手机端缩放</title>
+</head>
+<body>
+    
+    <div id="box"></div>
+    <script>
+        var box = document.getElementById("box");
+        var isTouch = false; //定义一个是否被点击的标志
+        var start = []; //定义一个数组存储坐标点
+        box.addEventListener("touchstart",function(e){
+            if(e.touches.length == 1){  //判断是否有2个点在屏幕上
+                isTouch = true;
+                start = [e.pageX, e.pageY];  //获得屏幕的第一组坐标点
+            }
+            console.log(e);
+        })
+        box.addEventListener("touchmove",function(e){
+            //e.preventDefault();
+            if(e.touches.length == 1 && isTouch){
+                var now = [e.touches[0].pageX,e.touches[0].pageY];
+                box.style.left = start[0] + now[0] + "px";
+                box.style.top = start[1] + now[1] + "px";
+            }
+        })
+    </script>
+</body>
+</html>

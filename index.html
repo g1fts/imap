@@ -2,25 +2,26 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1,minimum-scale=1, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="css/imap.css">
     <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
     <title>拱墅区教育地图</title>
 </head>
 <body>
+    <!-- 信息弹窗 -->
+    <div class="dialog" id="dialog">
+        <div class="dialogTop">
+            <div class="dialogTitle" id="dialogTitle">信息</div>
+            <button class="dialogClose" id="dialogClose">x</button>
+        </div>
+        <div class="dialogContent" id="dialogContent">
+            信息说明
+        </div>
+    </div>
     <!--地图容器-->
     <div class="imap" id="drag">
-        <!-- 信息弹窗 -->
-        <div class="dialog" id="dialog">
-            <div class="dialogTop">
-                <div class="dialogTitle" id="dialogTitle">信息</div>
-                <button class="dialogClose" id="dialogClose">x</button>
-            </div>
-            <div class="dialogContent" id="dialogContent">
-                信息说明
-            </div>
-        </div>
+        
         <!-- 定位范围圈 -->
         <div class="iCircles" id="iCircles"></div>
         <!-- 集团详细数据 -->
@@ -33,10 +34,18 @@
     <div class="guide" id="guide"></div>
 
     <script>
-        var iClientWidth = parseFloat(document.documentElement.clientWidth);
-        var iClientHeight = parseFloat(document.documentElement.clientHeight);
+        var iClientWidth = document.body.clientWidth;
+        var iClientHeight = document.body.clientHeight;
 
         var drag = document.getElementById("drag");
+
+        var iSetWidth = iDWidth = drag.offsetWidth;
+        var iSetHeight = iDHeight = drag.offsetHeight;
+        var iStep = 0;
+        var iStepMax = 2;
+        var iRate = null;
+        var iRateMath = null;
+        
         var iCircles = document.getElementById("iCircles");
         var iGroups = document.getElementById("iGroups");
         var iSchools = document.getElementById("iSchools");
@@ -53,19 +62,202 @@
         var iSchoolDiv = document.getElementsByClassName("iSchool");
 
         var schoolData = [];
+
+        
         
 
+        if(iClientWidth > iClientHeight){
+            iRate = Math.round(iClientWidth / iDWidth * 1000);
+            drag.style.backgroundSize = "100% auto";
+        }else{
+            iRate = Math.round(iClientHeight / iDHeight * 1000);
+            drag.style.backgroundSize = "auto 100%";
+        }
+        iRateMath = iRate / 1000;
+        iRateStep = (1000 - iRate) / iStepMax;
+        drag.style.width = iDWidth * iRateMath + "px";
+        drag.style.height = iDHeight * iRateMath + "px";
+
+        //缩放事件
+        var isScale = true;
+        //放大方法
+        function scaleFD(e){
+            drag.style.left = "0px";
+            drag.style.top = "0px";
+            iSchools.className = "iSchools active";
+            isScale = false;
+            if(iStep < iStepMax){
+                iStep++;
+                iRate = Math.round(iRate + iRateStep);
+                iRateMath = iRate / 1000;
+                drag.style.width = iDWidth * iRateMath+ "px";
+                drag.style.height = iDHeight * iRateMath+ "px";
+                
+            }
+        }
+        //缩小方法
+        function scaleSX(){
+            drag.style.left = "0px";
+            drag.style.top = "0px";
+            iSchools.className = "iSchools";
+            isScale = false;
+            if(iStep > 0){
+                iStep--;
+                iRate = Math.round(iRate - iRateStep);
+                iRateMath = iRate / 1000;
+                drag.style.width = iDWidth * iRateMath+ "px";
+                drag.style.height = iDHeight * iRateMath+ "px";
+                
+            }
+        }
+        
+
+        //PC端 滚轮事件
+        document.addEventListener("mousewheel",function(e){
+            isMove = false;
+            var e = event || window.event;
+            diffX = event.pageX - drag.offsetLeft;
+            diffY = event.pageY - drag.offsetTop;
+            for(var h = 0; h < iSchoolDiv.length; h++){
+                var iSchoolDivX = iSchoolDiv[h].offsetLeft;
+                var iSchoolDivY = iSchoolDiv[h].offsetTop;
+                iSchoolDiv[h].style.left = schoolData[h].x * iRateMath + "px";
+                iSchoolDiv[h].style.top = schoolData[h].y * iRateMath + "px";
+            }
+            dClose();
+            if(isScale){
+                if(e.wheelDelta > 0){
+                    scaleFD();
+                }else{
+                    scaleSX();
+                };
+                setTimeout(function(){
+                    isScale = true;
+                },500)
+            }
+        });
+
+        //拖拽事件
+        var diffX = 0;
+        var diffY = 0;
+        var moveX = 0;
+        var moveY = 0;
+        var isMove = true;
+
+        //拖拽方法
+        function iMove(e){
+            moveX = e.pageX - diffX;
+            moveY = e.pageY - diffY;
+            if(moveX < 0 && moveX > iClientWidth - drag.offsetWidth){
+                console.log("运行x");
+                drag.style.left = moveX + "px";
+            }else if(moveX > 0){
+                console.log("左边x");
+                drag.style.left = "0px";
+            }else if(moveX < iClientWidth - drag.offsetWidth){
+                console.log("右边x");
+                drag.style.left = iClientWidth - drag.offsetWidth + "px";
+            }
+            if(moveY < 0 && moveY > iClientHeight - drag.offsetHeight){
+                console.log("运行y");
+                drag.style.top = moveY + "px";
+            }else if(moveY > 0){
+                console.log("上边y");
+                drag.style.top = "0px";
+            }else if(moveY < iClientHeight - drag.offsetHeight){
+                console.log("下边y");
+                drag.style.top = iClientHeight - drag.offsetHeight + "px";
+            }
+            dClose();
+        }
+
+        //PC端 拖拽事件
+        //--鼠标按下
+        document.addEventListener("mousedown",function(e){
+            isScale = false;
+            
+            diffX = event.pageX - drag.offsetLeft;
+            diffY = event.pageY - drag.offsetTop;
+            //--鼠标拖动
+            document.addEventListener("mousemove",function(e){
+                if(isMove){
+                    iMove(event);
+                }
+                isMove = false;
+            },false);
+            document.addEventListener("mouseup",function(e){
+                isMove = true;
+                isScale = true;
+            },false);
+        },false);
+        //--鼠标抬起
+        
+
+        //移动端 双指事件
+        var start = null;
+        var now = null;
+        document.addEventListener("touchstart",function(e){
+            if(e.touches.length >= 2){
+                //缩放
+                start = e.touches;
+                isMove = false;
+            }else{
+                //拖拽
+                diffX = e.touches[0].pageX - drag.offsetLeft;
+                diffY = e.touches[0].pageY - drag.offsetTop;
+                isScale = false;
+            };
+        },false);
+        document.addEventListener("touchmove",function(e){
+            e.preventDefault();
+            var now = e.touches;
+            if(e.touches.length >= 2){
+                if(isScale){
+                    for(var h = 0; h < iSchoolDiv.length; h++){
+                        var iSchoolDivX = iSchoolDiv[h].offsetLeft;
+                        var iSchoolDivY = iSchoolDiv[h].offsetTop;
+                        iSchoolDiv[h].style.left = schoolData[h].x * iRateMath + "px";
+                        iSchoolDiv[h].style.top = schoolData[h].y * iRateMath + "px";
+                    }
+                    var val0 = getDistance(start[0],start[1]);
+                    var val1 = getDistance(now[0],now[1]);
+                    if(val0 < val1){
+                        scaleFD();
+                    }else{
+                        scaleSX();
+                    };
+                }
+            }else{
+                if(isMove){
+                    iMove(e.touches[0]);
+                }
+            }
+            
+        },false);
+        document.addEventListener("touchend",function(e){
+            isMove = true;
+            isScale = true;
+        })
+        //计算方法
+        function getDistance(p1, p2) {
+            var x = p2.pageX - p1.pageX,
+                y = p2.pageY - p1.pageY;
+            return Math.sqrt((x * x) + (y * y));
+        };
+        
+        var iData = null;
         $.ajax({
             url: "data.json",
             type: "GET",
             dataType: "JSON",
             success: function(data){
+                iData = data;
                 for(var i = 0; i < data.length; i++){
                     //添加定位点
                     var pointDiv = document.createElement("div");
                     pointDiv.className = "iPoint";
-                    pointDiv.style.left = data[i].x + "px";
-                    pointDiv.style.top = data[i].y + "px";
+                    pointDiv.style.left = data[i].x * iRateMath + "px";
+                    pointDiv.style.top = data[i].y * iRateMath + "px";
                     iCircles.appendChild(pointDiv);
 
                     //添加范围圈
@@ -76,13 +268,13 @@
                     // pointDiv.appendChild(circleDiv);
 
                     //添加集团详细数据
-                    var groupDiv = document.createElement("div");
-                    groupDiv.className = "iGroup";
-                    groupDiv.innerText = data[i].name;
-                    groupDiv.style.backgroundImage = "url("+data[i].icon+")";
-                    groupDiv.style.left = data[i].x + "px";
-                    groupDiv.style.top = data[i].y + "px";
-                    iGroups.appendChild(groupDiv);
+                    // var groupDiv = document.createElement("div");
+                    // groupDiv.className = "iGroup";
+                    // groupDiv.innerText = data[i].name;
+                    // groupDiv.style.backgroundImage = "url("+data[i].icon+")";
+                    // groupDiv.style.left = data[i].x * iRateMath + "px";
+                    // groupDiv.style.top = data[i].y * iRateMath + "px";
+                    // iGroups.appendChild(groupDiv);
                     
                     //添加学校详细数据
                     var schools = data[i].school;
@@ -92,43 +284,39 @@
                         schoolDiv.className = "iSchool";
                         schoolDiv.innerText = item.name;
                         schoolDiv.style.backgroundImage = "url("+item.icon+")";
-                        schoolDiv.style.left = item.x + "px";
-                        schoolDiv.style.top = item.y + "px";
+                        schoolDiv.style.left = item.x * iRateMath + "px";
+                        schoolDiv.style.top = item.y * iRateMath + "px";
                         iSchools.appendChild(schoolDiv);
                     });
 
                     //添加引导弹窗数据
                     var guideDiv = document.createElement("div");
                     guideDiv.className = "guideItem";
-                    var guideCircle = document.createElement("div");
-                    guideCircle.className = "guideItemCircle";
-                    guideCircle.style.background = "radial-gradient(rgba("+data[i].color+",0),"+"rgba("+data[i].color+",1))";
-                    guideDiv.appendChild(guideCircle);
-                    var guideIcon = document.createElement("div");
-                    guideIcon.className = "guideItemIcon";
-                    guideIcon.style.backgroundImage = "url("+data[i].icon+")";
-                    guideDiv.appendChild(guideIcon);
-                    var guideName = document.createElement("div");
-                    guideName.className = "guideItemName";
-                    guideName.innerText = data[i].name;
-                    guideDiv.appendChild(guideName);
+                    guideDiv.style.backgroundImage = "url("+data[i].icon+")";
+                    guideDiv.innerText = data[i].name;
                     guide.appendChild(guideDiv);
+                    guide.setAttribute("data-show","group");
 
                     //集团的点击事件
-                    iGroupDiv[i].onclick = (function(j){
-                        return function(){
-                            dialogInner(data[j]);
-                            dialogInfo(data[j]);
-                        }
-                    })(i);
+                    // iGroupDiv[i].onclick = (function(j){
+                    //     return function(){
+                    //         dialogInner(data[j]);
+                    //         dialogInfo(data[j]);
+                    //     }
+                    // })(i);
 
                     //引导层点击事件
-                    iGuideItem[i].onclick = (function(k){
-                        return function(){
-                            dialogInner(data[k]);
-                            dialogInfo(data[k]);
-                        }
-                    })(i);
+                    // iGuideItem[i].onclick = (function(k){
+                    //     return function(){
+                    //         isMove = false;
+                    //         // dialogInner(data[k]);
+                    //         // dialogInfo(data[k]);
+                    //         guideSchool(data[k]);
+                    //         console.log(2);
+                    //     }
+                    // })(i);
+
+                    
 
                     //信息弹窗关闭事件
                     dialogClose.onclick = dClose;
@@ -143,36 +331,58 @@
                         return function(){
                             dialogInner(schoolData[n]);
                             dialogInfo(schoolData[n]);
+                            isMove = false;
+                            event.cancelBubble = true;
+                            event.stopPropagation();
                         }
                     })(m);
-                };                
+                };
+                          
             }
         })
-
-        function IsPC() {
-            var userAgentInfo = navigator.userAgent;
-            var Agents = ["Android", "iPhone",
-                        "SymbianOS", "Windows Phone",
-                        "iPad", "iPod"];
-            var flag = true;
-            for (var v = 0; v < Agents.length; v++) {
-                if (userAgentInfo.indexOf(Agents[v]) > 0) {
-                    flag = false;
-                    console.log("移动端");
-                    guide.style.bottom = -guide.offsetHeight + "px";
-                    guide.addEventListener("click",function(){
-                        if(guide.className == "guide"){
-                            guide.style.bottom = 0;
-                            guide.className = "guide active";
-                        }else{
-                            guide.style.bottom = -guide.offsetHeight + "px";
-                            guide.className = "guide";
-                        }
-                    })
+        window.onload = function(){
+            $(".guideItem").on("click",function(){
+                
+            })
+        }
+        var gIndex = null;
+        var sIndex = null;
+        $(".guide").on("click",function(e){
+            isMove = false;
+            if(e.target.className == "guideItem"){
+                if(guide.getAttribute("data-show") == "group"){
+                    gIndex = $(e.target).index();
+                    console.log($(e.target).index());
+                    guide.setAttribute("data-show","school");
+                    guide.innerHTML = "";
+                    for(var i = 0; i < iData[gIndex].school.length; i++){
+                        var guideDiv = document.createElement("div");
+                        guideDiv.className = "guideItem";
+                        guideDiv.style.backgroundImage = "url("+iData[gIndex].school[i].icon+")";
+                        guideDiv.innerText = iData[gIndex].school[i].name;
+                        guide.appendChild(guideDiv);
+                    }
+                    guide.className = "active guide";
+                }else{
+                    sIndex = $(e.target).index();
+                    console.log(gIndex);
+                    dialogInner(iData[gIndex].school[sIndex]);
+                    dialogInfo(iData[gIndex].school[sIndex]);
                 }
             }
-            return flag;
-        }
+            else{
+                guide.setAttribute("data-show","group");
+                guide.innerHTML = "";
+                for(var i = 0; i < iData.length; i++){
+                    var guideDiv = document.createElement("div");
+                    guideDiv.className = "guideItem";
+                    guideDiv.style.backgroundImage = "url("+iData[i].icon+")";
+                    guideDiv.innerText = iData[i].name;
+                    guide.appendChild(guideDiv);
+                }
+                guide.className = "guide";
+            }
+        })
 
         function dialogInner(data){
             var tab = ""
@@ -219,81 +429,38 @@
             }
             dialogContent.innerHTML = tab + sInner;
         }
-
         function dialogInfo(item){
-            dialog.style.left = item.x-dialog.offsetWidth/2 + "px";
-            dialog.style.bottom = drag.offsetHeight-item.y+10 + "px";
+            // dialog.style.left = item.x * iRateMath - dialog.offsetWidth / 2 + "px";
+            // dialog.style.bottom = drag.offsetHeight - item.y * iRateMath + 10 + "px";
             dialogTitle.innerText = item.name;
             dialog.style.visibility = "visible";
             dialog.style.opacity = "1";
-            drag.style.transition = "all 1s";
-            if(item.x < iClientWidth/2){
-                drag.style.left = 0 + "px";
-            }else if(item.x > drag.offsetWidth - iClientWidth/2){
-                drag.style.left = -(drag.offsetWidth - iClientWidth) + "px";
-            }else{
-                drag.style.left = -(parseFloat(item.x)-iClientWidth/2) + "px";
-            }
-            if(item.y < iClientHeight/2+dialog.offsetHeight){
-                drag.style.top = 0 + "px";
-            }else if(item.y > drag.offsetHeight - iClientHeight/2+dialog.offsetHeight/2){
-                drag.style.top = -(drag.offsetHeight - iClientHeight-dialog.offsetHeight/2) + "px";
-            }else{
-                drag.style.top = -(parseFloat(item.y)-iClientHeight/2-dialog.offsetHeight/2) + "px";
-            }
+            // if(item.x < iClientWidth/2){
+            //     drag.style.left = 0 + "px";
+            //     console.log("左边1x");
+            // }else if(item.x > drag.offsetWidth - iClientWidth/2){
+            //     drag.style.left = -(drag.offsetWidth - iClientWidth) + "px";
+            //     console.log("右边1x");
+            // }else{
+            //     drag.style.left = -(parseFloat(item.x)-iClientWidth/2) + "px";
+            //     console.log("正常1x");
+            // }
+            // if(item.y < iClientHeight/2 + dialog.offsetHeight){
+            //     drag.style.top = 0 + "px";
+            //     console.log("上边1y");
+            // }else if(item.y > drag.offsetHeight - iClientHeight/2+dialog.offsetHeight/2){
+            //     drag.style.top = -(drag.offsetHeight - iClientHeight-dialog.offsetHeight/2) + "px";
+            //     console.log("下边1y");
+            // }else{
+            //     drag.style.top = -(parseFloat(item.y)-iClientHeight/2-dialog.offsetHeight/2) + "px";
+            //     console.log("正常1y");
+            // }
         }
         function dClose(){
             dialog.style.visibility = "hidden";
             dialog.style.opacity = "0";
         }
-
-        // 页面加载执行
-        window.onload = function(){
-            //地图居中
-            drag.style.left = -(drag.offsetWidth - iClientWidth)/2 + "px";
-            drag.style.top = -(drag.offsetHeight - iClientHeight)/2 + "px";
-            mapDrag();
-            IsPC();
-        }
-        // 地图拖拽方法
-        function mapDrag(){
-            // 点击某物体时，用drag对象即可，move和up是全局区域，
-            // 也就是整个文档通用，应该使用document对象而不是drag对象(否则，采用drag对象时物体只能往右方或下方移动)  
-            drag.onmousedown = function(event){
-                var event = event || window.event;  //兼容IE浏览器
-               //鼠标点击物体那一刻相对于物体左侧边框的距离=点击时的位置相对于浏览器最左边的距离-物体左边框相对于浏览器最左边的距离
-                var diffX = event.clientX - drag.offsetLeft;
-                var diffY = event.clientY - drag.offsetTop;
-                console.log("down");
-                if(typeof drag.setCapture !== 'undefined'){
-                    drag.setCapture(); 
-                }
-                document.onmousemove = function(event){
-                    drag.style.transition = "all 0s";
-                    dClose();
-                    console.log("move");
-                    var event = event || window.event;
-                    var moveX = event.clientX - diffX;
-                    var moveY = event.clientY - diffY;
-                    // 地图的拖拽可能是多个方向一起运动，所以X轴和Y轴分开判断
-                    if(moveX < 0 && moveX > document.documentElement.clientWidth - drag.offsetWidth){
-                        drag.style.left = moveX + 'px';
-                    }
-                    if(moveY < 0 && moveY > document.documentElement.clientHeight - drag.offsetHeight){
-                        drag.style.top = moveY + 'px';
-                    }
-                }
-                document.onmouseup = function(event){
-                    this.onmousemove = null;
-                    this.onmouseup = null;
-                    console.log("up");
-                    //修复低版本ie bug  
-                    if(typeof drag.releaseCapture!='undefined'){  
-                    drag.releaseCapture();
-                    }  
-                }
-            }
-        }
+        
     </script>
 </body>
 </html>

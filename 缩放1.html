@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1,minimum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <style>
+        *{ margin: 0; padding: 0; touch-action: pan-y;}
+        html, body{ width: 100%; height: 100%;; position: relative; overflow: hidden; }
+        #box{ width: 100px; height: 100px; position: absolute; background-color: black; transition: all 0.5s; }
+    </style>
+    <title>缩放兼容</title>
+</head>
+<body>
+    
+    <div id="box"></div>
+    <script>
+        var isScale = true;
+        var iBox = document.getElementById("box");
+        var iSetWidth = iDWidth = iBox.offsetWidth;
+        var iSetHeight = iDHeight = iBox.offsetHeight;
+        var iStep = iDStep = 4;
+        var iRate = (screen.width - iDWidth) / iStep;
+        
+        //放大方法
+        function scaleFD(){
+            isScale = false;
+            iSetWidth = iBox.offsetWidth;
+            iSetHeight = iBox.offsetHeight;
+            if(iStep < iDStep*2){
+                iBox.style.width = iSetWidth + iRate + "px";
+                iBox.style.height = iSetHeight + iRate + "px";
+                iStep = iStep + 1;
+            }else{
+                iBox.style.width = screen.width + "px";
+                iBox.style.height = screen.width + "px";
+            }
+            console.log("放大！");
+        }
+
+        //缩小方法
+        function scaleSX(){
+            isScale = false;
+            iSetWidth = iBox.offsetWidth;
+            iSetHeight = iBox.offsetHeight;
+            if(iStep > iDStep){
+                iBox.style.width = iSetWidth - iRate + "px";
+                iBox.style.height = iSetHeight - iRate + "px";
+                iStep = iStep - 1;
+            }else{
+                iBox.style.width = iDWidth + "px";
+                iBox.style.height = iDHeight + "px";
+            }
+            console.log("缩小！");
+        }
+
+        //PC端 滚轮事件
+        document.addEventListener("mousewheel",function(e){
+            var e = event || window.event;
+            if(isScale){
+                if(e.wheelDelta > 0){
+                    scaleFD();
+                    setTimeout(function(){
+                        isScale = true;
+                    },500);
+                }else{
+                    scaleSX();
+                    setTimeout(function(){
+                        isScale = true;
+                    },500);
+                };
+            }
+        });
+
+        //移动端 双指事件
+        var start = null;
+        var now = null;
+        document.addEventListener("touchstart",function(e){
+            if(e.touches.length >= 2){
+                start = e.touches;
+            };
+        },false);
+        document.addEventListener("touchmove",function(e){
+            var now = e.touches;
+            if(e.touches.length >= 2 && isScale){
+                var val0 = getDistance(start[0],start[1]);
+                var val1 = getDistance(now[0],now[1]);
+                if(val0 < val1){
+                    scaleFD();
+                }else{
+                    scaleSX();
+                };
+            };
+        },false);
+        document.addEventListener("touchend",function(e){
+            isScale = true;
+        })
+        //计算方法
+        function getDistance(p1, p2) {
+            var x = p2.pageX - p1.pageX,
+                y = p2.pageY - p1.pageY;
+            return Math.sqrt((x * x) + (y * y));
+        };
+    </script>
+</body>
+</html>
