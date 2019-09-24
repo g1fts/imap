@@ -149,23 +149,17 @@
             moveX = e.pageX - diffX;
             moveY = e.pageY - diffY;
             if(moveX < 0 && moveX > iClientWidth - drag.offsetWidth){
-                console.log("运行x");
                 drag.style.left = moveX + "px";
             }else if(moveX > 0){
-                console.log("左边x");
                 drag.style.left = "0px";
             }else if(moveX < iClientWidth - drag.offsetWidth){
-                console.log("右边x");
                 drag.style.left = iClientWidth - drag.offsetWidth + "px";
             }
             if(moveY < 0 && moveY > iClientHeight - drag.offsetHeight){
-                console.log("运行y");
                 drag.style.top = moveY + "px";
             }else if(moveY > 0){
-                console.log("上边y");
                 drag.style.top = "0px";
             }else if(moveY < iClientHeight - drag.offsetHeight){
-                console.log("下边y");
                 drag.style.top = iClientHeight - drag.offsetHeight + "px";
             }
             dClose();
@@ -279,7 +273,6 @@
                     //添加学校详细数据
                     var schools = data[i].school;
                     $.each(schools,function(index,item){
-                        //console.log(item);
                         var schoolDiv = document.createElement("div");
                         schoolDiv.className = "iSchool";
                         schoolDiv.innerText = item.name;
@@ -312,7 +305,6 @@
                     //         // dialogInner(data[k]);
                     //         // dialogInfo(data[k]);
                     //         guideSchool(data[k]);
-                    //         console.log(2);
                     //     }
                     // })(i);
 
@@ -352,7 +344,6 @@
             if(e.target.className == "guideItem"){
                 if(guide.getAttribute("data-show") == "group"){
                     gIndex = $(e.target).index();
-                    console.log($(e.target).index());
                     guide.setAttribute("data-show","school");
                     guide.innerHTML = "";
                     for(var i = 0; i < iData[gIndex].school.length; i++){
@@ -362,25 +353,30 @@
                         guideDiv.innerText = iData[gIndex].school[i].name;
                         guide.appendChild(guideDiv);
                     }
-                    guide.className = "active guide";
+                    guide.className = "school guide";
                 }else{
                     sIndex = $(e.target).index();
-                    console.log(gIndex);
                     dialogInner(iData[gIndex].school[sIndex]);
                     dialogInfo(iData[gIndex].school[sIndex]);
                 }
             }
             else{
-                guide.setAttribute("data-show","group");
-                guide.innerHTML = "";
-                for(var i = 0; i < iData.length; i++){
-                    var guideDiv = document.createElement("div");
-                    guideDiv.className = "guideItem";
-                    guideDiv.style.backgroundImage = "url("+iData[i].icon+")";
-                    guideDiv.innerText = iData[i].name;
-                    guide.appendChild(guideDiv);
+                if(guide.className == "guide"){
+                    guide.className = "active guide";
+                }else if(guide.className == "school guide"){
+                    guide.className = "active guide";
+                    guide.setAttribute("data-show","group");
+                    guide.innerHTML = "";
+                    for(var i = 0; i < iData.length; i++){
+                        var guideDiv = document.createElement("div");
+                        guideDiv.className = "guideItem";
+                        guideDiv.style.backgroundImage = "url("+iData[i].icon+")";
+                        guideDiv.innerText = iData[i].name;
+                        guide.appendChild(guideDiv);
+                    }
+                }else{
+                    guide.className = "guide";
                 }
-                guide.className = "guide";
             }
         })
 
